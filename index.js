@@ -24,13 +24,12 @@ deepai.setApiKey(nsfwtoken);
 const starboardSchema = require("./schemas/starboard");
 const modlogsSchema = require("./schemas/modlogs");
 const voiceSchema = require("./schemas/customvoice");
-require('@weky/inlinereply')
+// require('@weky/inlinereply')
 const client = new Discord.Client({
     partials: ["CHANNEL", "MESSAGE", "GUILD_MEMBER", "REACTION"],
     restTimeOffset: 0
 });
 const fs = require("fs");
-const { GiveawaysManager } = require("discord-giveaways");
 const afk = new Discord.Collection();
 const moment = require("moment");
 const Levels = require("discord-xp");
@@ -152,16 +151,7 @@ client.music = music;
 
 
 client.commands = new Discord.Collection();
-client.giveawaysManager = new GiveawaysManager(client, {
-    storage: "./giveaways.json",
-    updateCountdownEvery: 5000,
-    default: {
-        botsCanWin: false,
-        exemptPermission: ["MANAGE_MESSAGES", "ADMINSTRATOR"],
-        embedColor: "RANDOM",
-        reaction: "🎁",
-    },
-});
+
 
 
 client.embed = async(message, options) => {
@@ -206,9 +196,8 @@ client.on("ready", async () => {
     }, ms("15 Minutes"));
 
     const arrayOfStatus = [
-        `${client.guilds.cache.size} servers`,
-        `${client.channels.cache.size} channels`,
-        `${client.users.cache.size} users`,
+        `Multi-Purpose Bot`,
+        `Watching Over Everyone`,
         `run !necro`,
     ];
 
@@ -408,6 +397,7 @@ client.on("message", async (message) => {
 
     })
 
+  if(message.attachments.first()){
     await nsfwschema.findOne({Server:message.guild.id}, async(err,data)=>{
         if(!data || !data.Server == null) return;
 
@@ -431,6 +421,7 @@ client.on("message", async (message) => {
 
 
     })
+  }
 
     await chatschema.findOne({ Guild: message.guild.id }, async (err, data) => {
         if (!data) return;
@@ -553,6 +544,7 @@ client.on("message", async (message) => {
  try{
 
     if(message.mentions.users.first().id === client.user.id){
+        console.log(message.mentions.users.first())
         client.embed(message, {
             title: `Greetings ${message.author.username}`,
             description: `Your prefix in this server is **${prefix}**\n\n To get started you can do **${prefix} help**`,
